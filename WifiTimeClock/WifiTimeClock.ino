@@ -73,7 +73,8 @@ void timeString(){
   formattedDate = timeClient.getFormattedDate();
   Serial.println(formattedDate);
 
-  // Extract time /TODO: get summer-/wintertime automatic
+  // Extract time 
+  // TODO: get summer-/wintertime automatic
   int splitT = formattedDate.indexOf("T");
   timeStamp = formattedDate.substring(splitT+1, formattedDate.length()-1);
   Serial.print("HOUR: ");
@@ -86,7 +87,6 @@ void timeString(){
 //   display.setSegments(&colonOn, 1, 1); // Turns the colon on
  //   display.setSegments(&colonOff, 1, 1); // Turns the colon off
 void loop() {
-    display.setSegments(&colonOn, 1, 1); // Turns the colon on
     timeNow = millis()/1000;
     seconds = timeNow - timeLast;
     Serial.print("TimeNow: ");
@@ -94,9 +94,16 @@ void loop() {
     Serial.println(" ");
     Serial.print("TimeLast: ");
     Serial.println(timeLast);
+
+    if ((timeNow % 2) == 0){
+        Serial.println("Colon!");
+        display.setSegments(&colonOn, 1, 1); // Turns the colon on
+      } else {
+        Serial.println("No Colon");
+        display.setSegments(&colonOff, 1, 1); // Turns the colon off
+        }
     
     if (seconds == 60){
- 
       timeLast = timeNow;
       minutes += 1;
       display.showNumberDec(minutes, true, 2, 2);
@@ -120,9 +127,8 @@ void loop() {
     Serial.print(":");
     Serial.print(seconds);
     Serial.println(" ");
-
     
-    delay(500);
+    delay(990);
 }
 
  
